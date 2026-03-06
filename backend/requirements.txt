@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+chromadb
+sentence-transformers
+google-generativeai
+datasets
+sqlalchemy
+python-dotenv
+pypdf
+langchain-text-splitters

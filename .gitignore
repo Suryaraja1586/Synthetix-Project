@@ -1,0 +1,46 @@
+# ── Python ──────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# ── Environment / Secrets ────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Large generated files (vector store / DB) ───────
+backend/vector_store.pkl
+backend/*.pkl
+backend/admin_queue.db
+backend/*.db
+
+# ── Node.js / Next.js ────────────────────────────────
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+
+# ── OS / Editor ──────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
