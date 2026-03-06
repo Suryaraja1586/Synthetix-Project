@@ -14,6 +14,7 @@ type TriageResult = {
   confidence: number;
   escalated: boolean;
   ticket_id: number | null;
+  escalation_reason?: string;
 };
 
 type Message = {
@@ -629,12 +630,13 @@ function TriageCard({ result }: { result: TriageResult }) {
           </div>
           <div>
             <p className="escalation-title">Escalated to Human Agent</p>
-            <p className="escalation-ref">Ticket #{result.ticket_id} · Low confidence resolution</p>
+            <p className="escalation-ref">Ticket #{result.ticket_id} · {result.escalation_reason ?? "Low confidence resolution"}</p>
           </div>
         </div>
       )}
       <div className="card-meta">
         <div className="category-chip">
+          <b>Cluster:</b>
           <span>{CATEGORY_ICONS[result.category] ?? "📄"}</span>
           {result.category}
         </div>

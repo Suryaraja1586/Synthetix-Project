@@ -92,9 +92,9 @@ async def triage_ticket(req: TicketRequest, db: Session = Depends(get_db)):
     # 1. Classify category & urgency
     clf = classify(ticket_text)
 
-    # 2. Summary (first 150 chars)
-    summary = req.description[:150].strip()
-    if len(req.description) > 150:
+    # 2. Summary — include subject for readability in dashboard
+    summary = f"{req.subject}: {req.description[:120].strip()}"
+    if len(req.description) > 120:
         summary += "..."
 
     # 3. Retrieve from KB
@@ -102,6 +102,14 @@ async def triage_ticket(req: TicketRequest, db: Session = Depends(get_db)):
 
     # 4. LOW CONFIDENCE → escalate to admin queue
     if not confident:
+        # Determine reason for escalation for logging/transparency
+        if best_score == 0.0:
+            escalation_reason = "No matching knowledge base entries found"
+        elif best_score < 0.62:
+            escalation_reason = f"Best KB match confidence too low ({round(best_score * 100)}%)"
+        else:
+            escalation_reason = "KB matches ambiguous — no clear winner"
+
         ticket = EscalatedTicket(
             ticket_text=ticket_text,
             category=clf["category"],
@@ -109,7 +117,7 @@ async def triage_ticket(req: TicketRequest, db: Session = Depends(get_db)):
             summary=summary,
         )
         db.add(ticket)
-        
+
         latency = int((time.time() - start_time) * 1000)
         tel = Telemetry(
             endpoint="triage",
@@ -118,7 +126,7 @@ async def triage_ticket(req: TicketRequest, db: Session = Depends(get_db)):
             prompt_tokens=0, completion_tokens=0, total_tokens=0
         )
         db.add(tel)
-        
+
         db.commit()
         db.refresh(ticket)
 
@@ -128,15 +136,16 @@ async def triage_ticket(req: TicketRequest, db: Session = Depends(get_db)):
             "summary": summary,
             "draft_reply": (
                 "Thank you for reaching out! 🙏\n\n"
-                "I don't have enough specific information to resolve your query right now. "
-                "I've escalated your complaint to our support team — "
-                "please check back in **1 hour** and we'll have a personalised response ready for you.\n\n"
-                "Sorry for the inconvenience!"
+                "Our AI couldn't find a confident answer for your query in the knowledge base — "
+                "your ticket has been escalated to a human support agent.\n\n"
+                f"**Ticket #{ticket.id}** has been created. A specialist will review and respond within 1 hour.\n\n"
+                "We apologise for the wait!"
             ),
             "sources": [],
             "confidence": round(best_score, 3),
             "escalated": True,
             "ticket_id": ticket.id,
+            "escalation_reason": escalation_reason,
         }
 
     # 5. HIGH CONFIDENCE → generate grounded reply
