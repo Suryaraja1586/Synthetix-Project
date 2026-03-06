@@ -1,0 +1,18 @@
+/* Global resets only — per-page themes are defined in each page.tsx */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb { background: #334155; }
+  ::-webkit-scrollbar-thumb:hover { background: #475569; }
+}
