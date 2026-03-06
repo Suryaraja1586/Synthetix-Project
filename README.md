@@ -10,7 +10,7 @@
 &nbsp;
 ![Gemini](https://img.shields.io/badge/Gemini%20API-Google-4285F4?style=flat-square&logo=google&logoColor=white)
 &nbsp;
-![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20DB-orange?style=flat-square)
+![VectorStore](https://img.shields.io/badge/VectorStore-NumPy%20%2B%20Pickle-orange?style=flat-square)
 
 **Automatically classify, retrieve, and respond to customer support tickets using RAG + Gemini AI. Escalate low-confidence tickets to a human admin dashboard with self-learning KB integration.**
 
@@ -23,7 +23,7 @@
 SupportIQ is a full-stack AI support triage platform. When a customer submits a ticket:
 
 1. **Classifies** the category (e.g. IT Support, Billing) and urgency (High / Medium / Low) via keyword-based rule engine
-2. **Retrieves** the most relevant knowledge-base chunks using semantic search (ChromaDB + Sentence Transformers)
+2. **Retrieves** the most relevant knowledge-base chunks using semantic search (custom NumPy vector store + Sentence Transformers)
 3. **Generates** a grounded reply using Google Gemini — citing KB snippets
 4. **Escalates** low-confidence tickets to an admin queue for human review
 5. **Self-learns** — when an admin resolves a ticket, the resolution is embedded back into the vector KB for future use
@@ -50,9 +50,9 @@ SupportIQ is a full-stack AI support triage platform. When a customer submits a 
 └────┬───────────────────────────┬─────────────────────┘
      │                           │
 ┌────▼──────┐            ┌───────▼──────────┐
-│  ChromaDB │            │  SQLite (SQLAlch) │
-│  Vector   │            │  Tickets +        │
-│  Store    │            │  Telemetry logs   │
+│  ChromaDB │            │  SQLite (SQLAlch)│
+│  Vector   │            │  Tickets +       │
+│  Store    │            │  Telemetry logs  │
 └────┬──────┘            └──────────────────┘
      │
 ┌────▼──────────────────────┐
@@ -94,7 +94,7 @@ SupportIQ/
 | Tool | Version | Notes |
 |------|---------|-------|
 | Python | ≥ 3.10 | For the backend |
-| Node.js | ≥ 18 | For the frontend |
+| Next.js | ≥ 18 | For the frontend |
 | npm | ≥ 9 | Bundled with Node.js |
 | Google Gemini API Key | — | Free tier available at [aistudio.google.com](https://aistudio.google.com) |
 
@@ -451,7 +451,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000  # Backend URL
 | **Backend** | FastAPI, Uvicorn | REST API server |
 | **AI Model** | Google Gemini API | Reply generation |
 | **Embeddings** | Sentence Transformers (`all-MiniLM-L6-v2`) | Semantic search |
-| **Vector DB** | ChromaDB | Knowledge base storage + retrieval |
+| **Vector DB** | Custom NumPy + Pickle (`vector_store.pkl`) | Knowledge base storage + cosine similarity retrieval — replaces ChromaDB for Python 3.14 compat |
 | **Database** | SQLite + SQLAlchemy | Ticket storage + telemetry |
 | **Dataset** | HuggingFace `datasets` | Initial KB seeding |
 
