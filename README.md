@@ -36,17 +36,17 @@ SupportIQ is a full-stack AI support triage platform. When a customer submits a 
 ┌──────────────────────────────────────────────────────┐
 │                    Frontend (Next.js)                │
 │  /              → Chatbot (ticket submission)        │
-│  /admin/login   → Admin authentication              │
-│  /admin/dashboard → Escalation console + analytics  │
+│  /admin/login   → Admin authentication               │
+│  /admin/dashboard → Escalation console + analytics   │
 └─────────────────────────┬────────────────────────────┘
                           │ HTTP (Axios)
 ┌─────────────────────────▼────────────────────────────┐
 │                 Backend (FastAPI)                    │
-│  POST /triage              → AI triage pipeline     │
-│  GET  /admin/stats         → Dashboard stats        │
-│  GET  /admin/tickets/*     → Ticket management      │
-│  POST /admin/tickets/reply → Publish + KB learn     │
-│  GET  /admin/telemetry     → AI performance metrics │
+│  POST /triage              → AI triage pipeline      │
+│  GET  /admin/stats         → Dashboard stats         │
+│  GET  /admin/tickets/*     → Ticket management       │
+│  POST /admin/tickets/reply → Publish + KB learn      │
+│  GET  /admin/telemetry     → AI performance metrics  │
 └────┬───────────────────────────┬─────────────────────┘
      │                           │
 ┌────▼──────┐            ┌───────▼──────────┐

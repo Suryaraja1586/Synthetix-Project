@@ -36,7 +36,7 @@ def ingest_hf_dataset():
         subject = str(row.get("subject", "") or "")
         body = str(row.get("body", "") or "")
         answer = str(row.get("answer", "") or "")
-        ticket_type = str(row.get("type") or "Other")
+        ticket_type = str(row.get("queue","") or "Other")
 
         chunk = f"Subject: {subject}\nTicket: {body}\n\nResolution: {answer}".strip()
         if not chunk or chunk == "Subject: \nTicket: \n\nResolution:":
